@@ -1,59 +1,34 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace CountDownWinform
 {
-    public partial class Form1 : Form
+    public partial class MainForm : Form
     {
-        public Form1()
+
+        public MainForm()
         {
             InitializeComponent();
         }
 
-
         private void Form1_Load(object sender, EventArgs e)
         {
-
-            comboBox1.DataSource = CommonHelper.GetCboxData();
-            comboBox1.ValueMember = "Value";
-            comboBox1.DisplayMember = "Text";
-
             toolTip1.SetToolTip(this.checkBox1, "强力模式为置顶弹窗，会影响全屏游戏，非强力模式为类似小刻食堂的气泡");
             toolTip1.SetToolTip(this.dataGridView1, "选中后按delete键删除该行");
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            var timeStop = DateTime.Now;
-            timeStop = timeStop.AddHours(dateTimePicker1.Value.Hour).AddMinutes(dateTimePicker1.Value.Minute).AddSeconds(dateTimePicker1.Value.Second);
-            dataGridView1.Rows.Insert(0, comboBox1.Text, textBox1.Text, timeStop.ToString("yyyy/MM/dd HH:mm:ss"), CommonHelper.TimespanToText(timeStop - DateTime.Now));
-            textBox1.Text = "";
-            if (dataGridView1.Rows.Count > 0 && !timer1.Enabled)
+            var data = new SettingOptions().ReadOption("countDownList");
+            if (data != null)
             {
-                timer1.Enabled = true;
+                List<CountDownEntity> list = JsonConvert.DeserializeObject<List<CountDownEntity>>(data);
+                list.Sort((x, y) => { return x.Index.CompareTo(y.Index); });
+                foreach (var item in list)
+                {
+                    AddDataGridView(Convert.ToDateTime(item.Time), item.Name, item.Remark);
+                }
             }
         }
 
-        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            var time = 0;
-            int.TryParse(comboBox1.SelectedValue.ToString(), out time);
-            if (time == 24)
-            {
-                dateTimePicker1.Value = new DateTime(2021, 1, 1, 23, 59, 59);
-            }
-            else
-            {
-                dateTimePicker1.Value = new DateTime(2021, 1, 1, time, 0, 0);
-            }
-        }
 
         private void timer1_Tick(object sender, EventArgs e)
         {
@@ -61,7 +36,7 @@ namespace CountDownWinform
             {
                 var time = Convert.ToDateTime(dataGridView1.Rows[i].Cells[2].Value.ToString());
                 var timespan = time - DateTime.Now;
-                
+
                 if (timespan.TotalSeconds > 0)
                 {
                     dataGridView1.Rows[i].Cells[3].Value = CommonHelper.TimespanToText(timespan);
@@ -90,7 +65,10 @@ namespace CountDownWinform
 
         private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            var data = dataGridView1.SelectedRows[0];
+            if (dataGridView1.SelectedRows.Count > 0)
+            {
+                var data = dataGridView1.SelectedRows[0];
+            }
         }
 
         private void dataGridView1_KeyDown(object sender, KeyEventArgs e)
@@ -105,12 +83,17 @@ namespace CountDownWinform
             }
         }
 
-        public void CheckHasRow()
+        private void CheckHasRow()
         {
             if (dataGridView1.Rows.Count <= 0)
             {
                 timer1.Enabled = false;
             }
+            else
+            {
+                timer1.Enabled = true;
+            }
+            SaveCountDown();
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
@@ -118,6 +101,7 @@ namespace CountDownWinform
             e.Cancel = true;
             this.WindowState = FormWindowState.Minimized;
             this.ShowInTaskbar = false;
+            notifyIcon1.ShowBalloonTip(5000, "小刻食堂倒计时程序已最小化", "小刻食堂继续为你分秒必争", ToolTipIcon.None);
         }
 
         private void notifyIcon1_MouseDoubleClick(object sender, MouseEventArgs e)
@@ -136,5 +120,32 @@ namespace CountDownWinform
             this.Close();
         }
 
+        private void button1_Click(object sender, EventArgs e)
+        {
+            AddCountForm acf = new AddCountForm();
+            acf.ShowDialog(this);
+        }
+
+        public void AddDataGridView(DateTime timeStop, string name, string remake)
+        {
+            dataGridView1.Rows.Insert(0, name, remake, timeStop.ToString("yyyy/MM/dd HH:mm:ss"), CommonHelper.TimespanToText(timeStop - DateTime.Now));
+            CheckHasRow();
+        }
+
+        public void SaveCountDown()
+        {
+            List<CountDownEntity> list = new List<CountDownEntity>();
+            foreach (DataGridViewRow row in dataGridView1.Rows)
+            {
+                list.Add(new CountDownEntity
+                {
+                    Index = row.Index,
+                    Name = row.Cells["Column1"].Value.ToString(),
+                    Time = row.Cells["Column2"].Value.ToString(),
+                    Remark = row.Cells["Column3"].Value.ToString(),
+                });
+            }
+            new SettingOptions().SaveOption("countDownList", JsonConvert.SerializeObject(list));
+        }
     }
 }
