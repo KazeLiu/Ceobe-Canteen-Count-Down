@@ -147,5 +147,10 @@ namespace CountDownWinform
             }
             new SettingOptions().SaveOption("countDownList", JsonConvert.SerializeObject(list));
         }
+
+        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://github.com/LiuZiYang1/Ceobe-Canteen-Count-Down");
+        }
     }
 }
