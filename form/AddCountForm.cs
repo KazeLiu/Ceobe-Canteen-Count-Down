@@ -40,15 +40,19 @@ namespace CountDownWinform
             }
             else {
                 Control groupBox1 = this.Controls["groupBox1"];
-                foreach (var item in roomList)
+                var changRoomList = roomList.FindAll(x => int.Parse(x.Index) <= 9);
+                foreach (var item in changRoomList)
                 {
                     Control button = groupBox1.Controls["room" + item.Index];
-                    button.Text = item.Name;
-                    if (item.Color != "0,0,0")
-                    {
-                        var listColor = item.Color.Split(',');
-                        button.BackColor = Color.FromArgb(int.Parse(listColor[0]), int.Parse(listColor[1]), int.Parse(listColor[2]));
+                    if (button != null) {
+                        button.Text = item.Name;
+                        if (item.Color != "0,0,0")
+                        {
+                            var listColor = item.Color.Split(',');
+                            button.BackColor = Color.FromArgb(int.Parse(listColor[0]), int.Parse(listColor[1]), int.Parse(listColor[2]));
+                        }
                     }
+                   
                 }
             }
           
@@ -70,11 +74,6 @@ namespace CountDownWinform
             MouseEventArgs mouse = (MouseEventArgs)e;
             var info = (ButtonBase)sender;
             var roonData = roomList.Find(x => x.Name == info.Text);
-            if (roonData.TypeName == "发电站")
-            {
-                MessageBox.Show("发电站没有倒计时");
-                return;
-            }
             if (mouse.Button == MouseButtons.Left)
             {
                 MainForm md = (MainForm) this.Owner;
@@ -119,5 +118,6 @@ namespace CountDownWinform
             aucd.ShowDialog(this.Owner);
             label2.Text = "已经添加自定义倒计时";
         }
+
     }
 }

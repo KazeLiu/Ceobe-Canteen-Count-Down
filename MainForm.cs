@@ -43,7 +43,7 @@ namespace CountDownWinform
                 }
                 else
                 {
-                    notifyIcon1.ShowBalloonTip(5000, "小刻食堂：倒计时已经结束", "倒计时名称：" + dataGridView1.Rows[i].Cells[0].Value.ToString(), ToolTipIcon.Info);
+                    notifyIcon1.ShowBalloonTip(5000, dataGridView1.Rows[i].Cells[0].Value.ToString() + "的倒计时已经结束", dataGridView1.Rows[i].Cells[1].Value.ToString() == ""?"快去看看吧": dataGridView1.Rows[i].Cells[1].Value.ToString(), ToolTipIcon.Info);
                     if (checkBox1.Checked)
                     {
                         this.TopMost = true;
@@ -53,7 +53,7 @@ namespace CountDownWinform
                             ShowInTaskbar = true;
                         }
                         timer1.Enabled = false;
-                        MessageBox.Show(dataGridView1.Rows[i].Cells[0].Value.ToString() + "倒计时已经结束");
+                        MessageBox.Show(dataGridView1.Rows[i].Cells[1].Value.ToString() + "倒计时已经结束");
                         timer1.Enabled = true;
                         this.TopMost = false;
                     }
