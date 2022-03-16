@@ -87,7 +87,6 @@ namespace CountDownWinform
                 aucd.Controls["label1"].Text = roonData.Name;
                 aucd.ShowDialog(this.Owner);
             }
-            label2.Text = "已经添加【" + roonData.Name + "】的倒计时";
         }
 
         private void buttonRecruit_Click(object sender, MouseEventArgs e)

@@ -56,7 +56,6 @@ namespace CountDownWinform
             this.room13 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.label2 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -220,11 +219,11 @@ namespace CountDownWinform
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("微软雅黑", 10F);
-            this.label1.Location = new System.Drawing.Point(337, 20);
+            this.label1.Location = new System.Drawing.Point(13, 11);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(445, 20);
+            this.label1.Size = new System.Drawing.Size(529, 20);
             this.label1.TabIndex = 27;
-            this.label1.Text = "左击按钮直接添加基建24小时/公招9小时，右击按钮自定义时间和备注";
+            this.label1.Text = "左击按钮直接添加基建24小时/公招9小时，右击按钮自定义时间和备注，可重复添加";
             // 
             // button13
             // 
@@ -388,30 +387,20 @@ namespace CountDownWinform
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "公开招募";
             // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("微软雅黑", 10F);
-            this.label2.Location = new System.Drawing.Point(13, 13);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(51, 20);
-            this.label2.TabIndex = 31;
-            this.label2.Text = "无操作";
-            // 
             // AddCountForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(900, 617);
-            this.Controls.Add(this.label2);
+            this.ClientSize = new System.Drawing.Size(894, 611);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.label1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
+            this.MaximumSize = new System.Drawing.Size(910, 650);
             this.MinimizeBox = false;
-            this.MinimumSize = new System.Drawing.Size(810, 530);
+            this.MinimumSize = new System.Drawing.Size(910, 650);
             this.Name = "AddCountForm";
             this.Text = "添加倒计时";
             this.Load += new System.EventHandler(this.AddCountForm_Load);
@@ -445,7 +434,6 @@ namespace CountDownWinform
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button room17;
         private System.Windows.Forms.Button room16;
         private System.Windows.Forms.Button room15;

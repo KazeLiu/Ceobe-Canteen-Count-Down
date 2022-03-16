@@ -105,6 +105,8 @@ namespace CountDownWinform
             this.Controls.Add(this.label5);
             this.Controls.Add(this.dateTimePicker1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximumSize = new System.Drawing.Size(491, 86);
+            this.MinimumSize = new System.Drawing.Size(491, 86);
             this.Name = "AddUserCountDown";
             this.Text = "添加自定义倒计时时间";
             this.ResumeLayout(false);
